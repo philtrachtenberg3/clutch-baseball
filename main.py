@@ -1,6 +1,8 @@
 from pybaseball import playerid_lookup, statcast_batter
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+import seaborn as sns
 from datetime import datetime
 
 # --- Defaults ---
@@ -38,9 +40,12 @@ if player.empty:
 
 mlbam_id = player.iloc[0]['key_mlbam']
 
-# Get Statcast data
+# ----- GET STATCAST DATA ------
 df = statcast_batter(start_date_range, end_date_range, player_id=mlbam_id)
 print(df)
+df_ballstrike = df['description'].value_counts()
+print(df_ballstrike)
+
 # ---- DISPLAY STRIKE ZONE TARGET ----
 
 # Filter out rows without location data
@@ -48,7 +53,33 @@ df_zone = df[df['plate_x'].notnull() & df['plate_z'].notnull()]
 
 # Plot pitch locations
 plt.figure(figsize=(5, 6))
-plt.scatter(df_zone['plate_x'], df_zone['plate_z'], alpha=0.5, c='red', edgecolor='black')
+# OLD: plt.scatter(df_zone['plate_x'], df_zone['plate_z'], alpha=0.5, c='red', edgecolor='black')
+
+# Use seaborn to get distinct colors
+unique_pitches = df_zone['pitch_type'].dropna().unique()
+palette = sns.color_palette("hls", len(unique_pitches))
+color_map = dict(zip(unique_pitches, palette))
+
+# Create the plot
+plt.figure(figsize=(6, 7))
+
+# VARIABLES: Define which descriptions are "balls" vs "strikes"
+strike_descriptions = {
+    "called_strike", "swinging_strike", "swinging_strike_blocked",
+    "foul", "foul_tip", "foul_bunt", "missed_bunt", "hit_into_play"
+}
+ball_descriptions = {"ball", "blocked_ball", "intent_ball", "pitchout"}
+
+# Plot each pitch type separately and make balls and strikes different transparency
+for pitch in unique_pitches:
+    pitch_data = df_zone[df_zone['pitch_type'] == pitch]
+
+    for _, row in pitch_data.iterrows():
+        outcome = row.get("description", "")
+        alpha_val = 0.8 if outcome in strike_descriptions else 0.3
+        plt.scatter(row['plate_x'], row['plate_z'],
+                    c=[color_map[pitch]], alpha=alpha_val,
+                    edgecolor='black', s=60)
 
 # Draw the strike zone
 # Strike zone is roughly from 1.5 to 3.5 feet in height and -0.83 to 0.83 in width
@@ -63,6 +94,13 @@ plt.ylabel("Vertical Plate Location (feet)")
 plt.xlim(-2, 2)
 plt.ylim(0, 5)
 plt.grid(True)
+# Create custom legend handles (one for each pitch type)
+legend_handles = [
+    Patch(facecolor=color_map[pitch], edgecolor='black', label=pitch)
+    for pitch in unique_pitches
+]
+plt.legend(handles=legend_handles, title="Pitch Type", bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
 
 # Print target to .png file
 plt.savefig("strike_zone_plot.png", dpi=300, bbox_inches='tight')
