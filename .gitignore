@@ -1,0 +1,15 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.env/
+
+# Plot images (optional)
+*.png
+
+# OS and editor-specific files
+.DS_Store
+.vscode/
+.idea/
