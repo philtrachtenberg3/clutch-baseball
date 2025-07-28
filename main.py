@@ -10,8 +10,8 @@ DEFAULT_START = "2023-03-30"
 DEFAULT_END = "2023-10-01"
 
 # Get user input
-batter_first_name = input("What is the batter's first name? ") or DEFAULT_FIRST
 batter_last_name = input("What is the batter's last name? ") or DEFAULT_LAST
+batter_first_name = input("What is the batter's first name? ") or DEFAULT_FIRST
 start_date_range = input("What is the start date (YYYY-MM-DD)? ") or DEFAULT_START
 end_date_range = input("What is the end date (YYYY-MM-DD)? ") or DEFAULT_LAST
 
@@ -57,7 +57,7 @@ plt.axhline(3.5, color='black', linestyle='--')
 plt.axvline(-0.83, color='black', linestyle='--')
 plt.axvline(0.83, color='black', linestyle='--')
 
-plt.title(f"Pitch Locations for {batter_first_name} {batter_last_name}")
+plt.title(f"Pitch Locations for {batter_first_name} {batter_last_name} ({start_date_range} - {end_date_range})")
 plt.xlabel("Horizontal Plate Location (feet)")
 plt.ylabel("Vertical Plate Location (feet)")
 plt.xlim(-2, 2)

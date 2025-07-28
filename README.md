@@ -4,6 +4,8 @@ I need a project to work on and I know baseball pretty well. I'm trying to creat
 
 ## 🔍 Features
 
+Right now it's just an input for the batter and year, and it returns a .png of the pitches they saw that year.
+
 (ChatGPT):
 - Pulls Statcast pitch-by-pitch data using `pybaseball`
 - Filters for high-leverage clutch scenarios (e.g. RISP, 2 outs, late innings)
