@@ -23,3 +23,9 @@ Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+
+## 📊 Example Output
+
+Here’s an example strike zone plot for Shohei Ohtani:
+
+![Strike Zone Plot] (strike_zone_plot.png)
