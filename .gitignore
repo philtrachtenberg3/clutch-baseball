@@ -7,7 +7,7 @@ venv/
 .env/
 
 # Plot images (optional)
-*.png
+# *.png
 
 # OS and editor-specific files
 .DS_Store
