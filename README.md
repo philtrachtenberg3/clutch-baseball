@@ -12,6 +12,12 @@ Right now it's just an input for the batter and year, and it returns a .png of t
 - Visualizes pitch locations on a strike zone plot
 - Calculates hard-hit rate in clutch vs overall
 
+## 📊 Example Output
+
+Here’s an example strike zone plot for Shohei Ohtani:
+
+![Strike Zone Plot] (strike_zone_plot.png)
+
 ## 📦 Requirements
 
 - Python 3.9+
@@ -23,9 +29,3 @@ Install dependencies:
 
 ```bash
 pip install -r requirements.txt
-
-## 📊 Example Output
-
-Here’s an example strike zone plot for Shohei Ohtani:
-
-![Strike Zone Plot] (strike_zone_plot.png)
