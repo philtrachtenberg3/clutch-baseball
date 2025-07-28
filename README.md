@@ -16,7 +16,7 @@ Right now it's just an input for the batter and year, and it returns a .png of t
 
 Here’s an example strike zone plot for Shohei Ohtani:
 
-![Strike Zone Plot] (strike_zone_plot.png)
+![Strike Zone Plot](strike_zone_plot.png)
 
 ## 📦 Requirements
 
