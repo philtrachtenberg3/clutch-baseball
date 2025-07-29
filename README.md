@@ -16,7 +16,7 @@ Right now, the app runs locally via Flask. It provides a form for entering a bat
 
 ## 📊 Example Output
 
-Here’s an example strike zone plot for Shohei Ohtani:
+Here’s an example strike zone plot for Bryce Harper:
 
 ![Strike Zone Plot](/static/strike_zone_plot_readme.png)
 
