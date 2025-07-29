@@ -48,37 +48,46 @@ print(df_ballstrike)
 
 # ---- DISPLAY STRIKE ZONE TARGET ----
 
+# VARIABLES: balls vs. strikes, pitch groups
+strike_descriptions = {
+    "called_strike", "swinging_strike", "swinging_strike_blocked",
+    "foul", "foul_tip", "foul_bunt", "missed_bunt", "hit_into_play"
+}
+ball_descriptions = {"ball", "blocked_ball", "intent_ball", "pitchout"}
+pitch_groups = {
+    'FF': 'Fastball', 'FT': 'Fastball', 'SI': 'Fastball', 'FC': 'Fastball',
+    'SL': 'Breaking', 'CU': 'Breaking', 'KC': 'Breaking', 'KN': 'Breaking', 'SV': 'Breaking',
+    'CH': 'Changeup', 'FS': 'Changeup',
+    'EP': 'Other', 'PO': 'Other', 'FO': 'Other'
+}
+
 # Filter out rows without location data
 df_zone = df[df['plate_x'].notnull() & df['plate_z'].notnull()]
+df_zone['pitch_group'] = df_zone['pitch_type'].map(pitch_groups).fillna('Other')
 
 # Plot pitch locations
 plt.figure(figsize=(5, 6))
 # OLD: plt.scatter(df_zone['plate_x'], df_zone['plate_z'], alpha=0.5, c='red', edgecolor='black')
 
 # Use seaborn to get distinct colors
-unique_pitches = df_zone['pitch_type'].dropna().unique()
-palette = sns.color_palette("hls", len(unique_pitches))
-color_map = dict(zip(unique_pitches, palette))
+unique_pitch_groups = df_zone['pitch_group'].unique()
+palette = sns.color_palette("hls", len(unique_pitch_groups))
+color_map = dict(zip(unique_pitch_groups, palette))
+
 
 # Create the plot
 plt.figure(figsize=(6, 7))
 
-# VARIABLES: Define which descriptions are "balls" vs "strikes"
-strike_descriptions = {
-    "called_strike", "swinging_strike", "swinging_strike_blocked",
-    "foul", "foul_tip", "foul_bunt", "missed_bunt", "hit_into_play"
-}
-ball_descriptions = {"ball", "blocked_ball", "intent_ball", "pitchout"}
 
 # Plot each pitch type separately and make balls and strikes different transparency
-for pitch in unique_pitches:
-    pitch_data = df_zone[df_zone['pitch_type'] == pitch]
+for pitch_group in unique_pitch_groups:
+    pitch_data = df_zone[df_zone['pitch_group'] == pitch_group]
 
     for _, row in pitch_data.iterrows():
         outcome = row.get("description", "")
         alpha_val = 0.8 if outcome in strike_descriptions else 0.3
         plt.scatter(row['plate_x'], row['plate_z'],
-                    c=[color_map[pitch]], alpha=alpha_val,
+                    c=[color_map[pitch_group]], alpha=alpha_val,
                     edgecolor='black', s=60)
 
 # Draw the strike zone
@@ -96,8 +105,8 @@ plt.ylim(0, 5)
 plt.grid(True)
 # Create custom legend handles (one for each pitch type)
 legend_handles = [
-    Patch(facecolor=color_map[pitch], edgecolor='black', label=pitch)
-    for pitch in unique_pitches
+    Patch(facecolor=color_map[pitch_group], edgecolor='black', label=pitch_group)
+    for pitch_group in unique_pitch_groups
 ]
 plt.legend(handles=legend_handles, title="Pitch Type", bbox_to_anchor=(1.05, 1), loc='upper left')
 plt.tight_layout()
