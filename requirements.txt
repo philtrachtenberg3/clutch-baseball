@@ -1,3 +1,5 @@
 pybaseball
 pandas
 matplotlib
+flask
+seaborn

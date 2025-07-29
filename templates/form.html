@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clutch Zone Analyzer</title>
+    <style>
+        img {
+            max-width: 600px;
+            height: auto;
+        }
+        .loading {
+            font-style: italic;
+            color: gray;
+        }
+    </style>
+    <script>
+    function showLoading() {
+        document.getElementById("loading-msg").style.display = "block";
+    }
+    </script>
+</head>
+<body>
+    <h1>Clutch Zone Analyzer</h1>
+
+    <form method="POST" onsubmit="showLoading()">
+        First Name: <input type="text" name="first_name" value="{{ first or '' }}"><br>
+        Last Name: <input type="text" name="last_name" value="{{ last or '' }}"><br>
+        Start Date: <input type="date" name="start_date" value="{{ start or '' }}"><br>
+        End Date: <input type="date" name="end_date" value="{{ end or '' }}"><br>
+        <input type="submit" value="Generate Plot">
+    </form>
+
+    <p id="loading-msg" class="loading" style="display: none;">Gathering player data...</p>
+
+    {% if error %}
+        <p style="color:red;">{{ error }}</p>
+    {% endif %}
+
+    {% if img_path %}
+        <h2>Pitch Chart for {{ first }} {{ last }}</h2>
+        <p>Date Range: {{ start }} to {{ end }}</p>
+        <img src="{{ url_for('static', filename='strike_zone_plot.png') }}" alt="Strike Zone Plot">
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Clutch Plot Result</title>
+</head>
+<body>
+    <h1>Pitch Chart for {{ first }} {{ last }}</h1>
+    <p>Date Range: {{ start }} to {{ end }}</p>
+    <img src="{{ url_for('static', filename='strike_zone_plot.png') }}" alt="Strike Zone Plot">
+    <br><br>
+    <a href="/">Try another player</a>
+</body>
+</html>
